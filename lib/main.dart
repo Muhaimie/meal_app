@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meal_app/categories_screen.dart';
-import './category_meals_screen.dart';
+import 'package:meal_app/screens/tabs_screen.dart';
+import './screens/categories_screen.dart';
+import './screens/category_meals_screen.dart';
+import './screens/meal_detail_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,8 +31,26 @@ class MyApp extends StatelessWidget {
                           ),
         )
       ),
-      home: CategoriesScreen(),
-      routes: {"/categories-meal": (ctx) => CategoryMealScreen()},
+      //home: CategoriesScreen(),
+      initialRoute: "/",
+      routes: {
+        "/" : (ctx) => TabsScreen()
+        ,CategoryMealScreen.routeName: (ctx) => CategoryMealScreen(),
+        MealDetailScreen.routeName: (ctx) => MealDetailScreen()
+        },
+
+        //that not registed in route Table automatically go to this route instead &
+        //also good if the app have highly  generative behavior
+        // onGenerateRoute: (settings){
+        //   print(settings.arguments);
+        //   return MaterialPageRoute(builder: (ctx) => CategoryMealScreen());
+        // },
+
+        //last resort befor its return error
+        onUnknownRoute: (settings){
+          return MaterialPageRoute(builder: (ctx)=> CategoryMealScreen());
+        },
+        
     );
   }
 }
