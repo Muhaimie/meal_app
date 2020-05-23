@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:meal_app/widgets/main_drawer.dart';
 import './favourite_screen.dart';
 import './categories_screen.dart';
+import '../models/meal.dart';
 
 class TabsScreen extends StatefulWidget {
   @override
+  final List<Meal> favouriteMeals;
+
+  TabsScreen(this.favouriteMeals);
+
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  final List<Map<String, Object>> _pages = [{"page":CategoriesScreen(),"title":"Categories"},
-  {"page" :FavouriteScreen(),"title":"Your Favourite"}];
+  List<Map<String, Object>> _pages;
 
   int _selectedPageIndex = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _pages = [
+      {"page": CategoriesScreen(), "title": "Categories"},
+      {
+        "page": FavouriteScreen(widget.favouriteMeals),
+        "title": "Your Favourite"
+      }
+    ];
+  }
 
   //automatic flutter gv index in BNB
   void _selectPage(int index) {
@@ -24,6 +43,7 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(_pages[_selectedPageIndex]["title"])),
+      drawer: MainDrawer(),
       body: _pages[_selectedPageIndex]["page"],
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
